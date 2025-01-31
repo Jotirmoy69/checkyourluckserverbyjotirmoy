@@ -2,17 +2,20 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import userschema from './models/schema.js';
-import cors from 'cors'; // Import CORS
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
 app.use(cors({
     credentials: true,
-    origin : process.env.ORIGIN
+    origin: process.env.ORIGIN,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.options('*', cors());
 
 app.post('/data', async (req, res) => {
     try {
