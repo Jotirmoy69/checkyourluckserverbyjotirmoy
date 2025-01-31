@@ -7,11 +7,20 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
+
+const allowedOrigins = [process.env.ORIGIN];
 app.use(cors({
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
-    origin: process.env.ORIGIN,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
