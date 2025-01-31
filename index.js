@@ -2,17 +2,24 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import userschema from './models/schema.js';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
+import helmet from 'helmet';
 
 dotenv.config();
 
 const app = express();
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
-
+app.use(cors({
+    credentials: true,
+    origin : process.env.FRONTEND_URL
+}));
+app.use(express.json());
+app.use(cookieParser());
+app.use(morgan('combined'));
+app.use(helmet({
+    crossOriginResourcePolicy: false
+}));
 
 
 app.use(express.json());    
