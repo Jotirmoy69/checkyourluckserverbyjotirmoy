@@ -2,29 +2,16 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import userschema from './models/schema.js';
-import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [process.env.ORIGIN];
-app.use(cors({
-    origin: (origin, callback) => {
-        if (allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-}));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.options('*', cors());
 
 app.post('/data', async (req, res) => {
     try {
